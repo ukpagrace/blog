@@ -36,7 +36,8 @@
 							"System Design",
 							"Distributed Systems",
 							"Career Development",
-							"Open Source"
+							"Open Source",
+							"Personal development"
 						],
 						"namespace": ["post", "category"],
 						"searchable": true
