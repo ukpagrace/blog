@@ -11,5 +11,6 @@ export const CATEGORIES = [
 	'System Design',
 	'Distributed Systems',
 	'Career Development',
-	'Open Source'
+	'Open Source',
+	'Personal development'
 ] as const
