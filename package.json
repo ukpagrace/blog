@@ -36,7 +36,7 @@
 		"@astrojs/rss": "4.0.9",
 		"astro": "4.16.6",
 		"astro-font": "^0.1.81",
-		"fs-extra": "9.0.1",
+		"fs-extra": "11.2.0",
 		"sucrase": "3.35.0",
 		"yup": "0.32.0"
 	},
