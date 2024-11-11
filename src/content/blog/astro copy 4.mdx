@@ -1,196 +1,291 @@
 ---
-heroImage: ../../assets/images/banner.jpg
+heroImage: /src/assets/images../../assets/images/banner.jpg
 category: Data Structure and Algorithms
-description: >-
-  Astro components are HTML templates with superpowers. They are a superset of
-  HTML, with support for including components and JavaScript expressions.
-pubDate: 2022-07-01T23:00:00.000Z
+description: Binary Tree Data Structure
+pubDate: 2022-11-06T23:00:00.000Z
 tags:
-  - JavaScript
-  - css
-  - HTML5
-  - GitHub
-  - Ordenador
-title: Components
+  - binary tree
+  - java
+  - data structure and algorithm
+title: 'Binary Tree in Java with unit test '
 ---
 
-**If you know HTML, you already know enough to write your first Astro component.**
+Creating a binary tree in Java, we look at 
 
-Astro component syntax is a superset of HTML. The syntax was [designed to feel familiar to anyone with experience writing HTML or JSX](#differences-between-astro-and-jsx), and adds support for including components and JavaScript expressions.
+* Insertion
+* Traversal(In Order, Pre Order, Post Order) 
+*  deletion(In Order Predecessor, In Order Successor).
 
-## JSX-like Expressions
+In binary tree recursion is a very important algorithm, it really pushes your understanding. Sometimes i have to go through it with a debugger or some times pen and paper to really understand what is happening, now i think i have a good understanding. Peaks of a debugger.
 
-You can define local JavaScript variables inside of the frontmatter component script between the two code fences (`---`) of an Astro component. You can then inject these variables into the component's HTML template using JSX-like expressions!
+Anyway a binary tree insert the lesser number of the root to the right and the greater number to the left.
 
-\:::note\[dynamic vs reactive]
-Using this approach, you can include **dynamic** values that are calculated in the frontmatter. But once included, these values are not **reactive** and will never change. Astro components are templates that only run once, during the rendering step.
+We start with a number 10
 
-See below for more examples of [differences between Astro and JSX](#differences-between-astro-and-jsx).
-\:::
+                         10
 
-### Variables
+we add another number 5, 5 is lesser than 10 so it goes to the left.
 
-Local variables can be added into the HTML using the curly braces syntax:
+                          10
 
-```astro
----
-const name = 'Astro'
----
+                          /   \\
 
-<div>
-	<h1>Hello {name}!</h1>
-	<!-- Outputs <h1>Hello Astro!</h1> -->
-</div>
-```
+                        5
 
-### Dynamic Attributes
+we add another number 20, 20 is greater than 10 so it goes to the right.
 
-Local variables can be used in curly braces to pass attribute values to both HTML elements and components:
+                          10
 
-```astro
----
-const name = 'Astro'
----
+                          /   \\
 
-<h1 class={name}>Attribute expressions are supported</h1>
+                        5    20
 
-<MyComponent templateLiteralNameAttribute={`MyNameIs${name}`} />
-```
+That's how a binary tree works, each node has at most two children.
 
-\:::caution
-HTML attributes will be converted to strings, so it is not possible to pass functions and objects to HTML elements.
-For example, you can't assign an event handler to an HTML element in an Astro component:
+Let's write the INSERTION
 
-```astro
----
-// dont-do-this.astro
-function handleClick() {
-	console.log('button clicked!')
+We have our class tree, this is what creates each node for us, on creation left and right are null
+
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int val) {
+        this.val = val;
+        left = right = null;
+    }
 }
----
-
-<!-- ❌ This doesn't work! ❌ -->
-<button onClick={handleClick}>Nothing will happen when you click me!</button>
 ```
 
-Instead, use a client-side script to add the event handler, like you would in vanilla JavaScript:
+```java
+public class BinaryTree{
+    TreeNode root;
 
-```astro
----
-// do-this-instead.astro
----
-
-<button id='button'>Click Me</button>
-<script>
-	function handleClick() {
-		console.log('button clicked!')
-	}
-	document.getElementById('button').addEventListener('click', handleClick)
-</script>
+    BinaryTree(){
+        root = null;
+    }
+    public void insert (int val){
+        root = insertNode(root, val);
+    }
+    private TreeNode insertNode(TreeNode root, int val){
+        if(root == null){
+            root = new TreeNode(val);
+            return root;
+        }
+        if(val < root.val){
+            root.left = insertNode(root.left, val);
+        }else if(val > root.val){
+            root.right = insertNode(root.right, val);
+        }
+        return root;
+    }
+}
 ```
 
-\:::
+When the class is initialised root is set to null, we call insert. if root is null that's our first value, root is given that value, for another value it check wether it's greater or lesser than root and assigns it accordingly.
 
-### Dynamic HTML
+Let's Look at TRAVERSAL
 
-Local variables can be used in JSX-like functions to produce dynamically-generated HTML elements:
+we have the In order Traversing, it displays the left-->root-->right, the display is between the left and the right.
 
-```astro
----
-const items = ['Dog', 'Cat', 'Platypus']
----
+```java
+public void inOrder(){
+      inOrderTraverse(root);
+  }
 
-<ul>
-	{items.map((item) => <li>{item}</li>)}
-</ul>
+  private void inOrderTraverse(TreeNode root){
+      if(root != null){
+          inOrderTraverse(root.left);
+          System.out.print(root.val + "-->");
+          inOrderTraverse(root.right);
+
+      }
+  }
 ```
 
-Astro can conditionally display HTML using JSX logical operators and ternary expressions.
+Then we have the Pre Order Traversal, the display is at the beginning, it displays root-->left-->right
 
-```astro
----
-const visible = true
----
+```java
+public void preOrder(){
+  preOrderTraverse(root);
+}
 
-{visible && <p>Show me!</p>}
-
-{visible ? <p>Show me!</p> : <p>Else show me!</p>}
+private void preOrderTraverse(TreeNode root){
+  if (root != null) {
+    System.out.print(root.val + "-->");
+    preOrderTraverse(root.left);
+    preOrderTraverse(root.right);
+  }
+}
 ```
 
-### Dynamic Tags
+Last we have the Post Order Traversal, the display is at the end, it displays left-->right-->root
 
-You can also use dynamic tags by setting a variable to an HTML tag name or a component import:
+```java
+public void postOrder(){
+    postOrderTraverse(root);
+}
 
-```astro
----
-import MyComponent from './MyComponent.astro'
-const Element = 'div'
-const Component = MyComponent
----
-
-<Element>Hello!</Element>
-<!-- renders as <div>Hello!</div> -->
-<Component />
-<!-- renders as <MyComponent /> -->
+private void postOrderTraverse(TreeNode root){
+    if(root != null){
+        postOrderTraverse(root.left);
+        postOrderTraverse(root.right);
+        System.out.print(root.val + "-->");
+    }
+}
 ```
 
-When using dynamic tags:
+Let's look at Deletion, When we delete a node that has no child, we don't need to account for the children so it's straight forward, when the node has one child when we delete the node, the child of that node becomes the child of the parent node. example
 
-- **Variable names must be capitalized.** For example, use `Element`, not `element`. Otherwise, Astro will try to render your variable name as a literal HTML tag.
-- **Hydration directives are not supported.** When using [`client:*` hydration directives](/en/core-concepts/framework-components/#hydrating-interactive-components), Astro needs to know which components to bundle for production, and the dynamic tag pattern prevents this from working.
+                        10
 
-### Fragments
+                        /   \\
 
-Astro supports using either `<Fragment> </Fragment>` or the shorthand `<> </>`.
+                      8     20
 
-Fragments can be useful to avoid wrapper elements when adding [`set:*` directives](/en/reference/directives-reference/#sethtml), as in the following example:
+                       \\
 
-```astro
----
-const htmlString = '<p>Raw HTML content</p>'
----
+                       9
 
-<Fragment set:html={htmlString} />
+If we delete 8 the tree becomes 
+
+                        10
+
+                        /   \\
+
+                      9    20
+
+When the node to be deleted has two children we have can use two methods for to select who takes it's place we have the In order successor, it takes the smallest value of the right root. example 
+
+                          15
+
+                       /         \\
+
+                    10         20
+
+                   /   \         /     \\
+
+                 8   12     17    25
+
+we want to delete 15
+
+In Order Successor will replace the node we want to delete (15) with the smallest number of the number larger than 15 which will be 17, so we start from the right and traverse the left, to find the smallest number.
+
+while In Order Predecessor will replace the node we want to delete(15) with the largest number of the number smaller than 15 which will be 12, so we start from the left and traverse the right, to find the largest number.
+
+```java
+public void delete(int key){
+    root = deleteNode(root, key);
+}
+private TreeNode deleteNode(TreeNode root, int val){
+    if(root == null){
+        return root;
+    }
+
+    if(val < root.val){
+        root.left = deleteNode(root.left, val);
+    }else if(val > root.val){
+        root.right = deleteNode(root.right, val);
+    }else{
+        if(root.left == null){
+            return root.right;
+        }else if(root.right == null){
+            return root.left;
+        }
+        root.val  = predecessor(root.left);
+        root.left = deleteNode(root.left, root.val);
+
+    }
+    return root;
+}
+
+private int predecessor(TreeNode root){
+    int max_value = root.val;
+    while(root.right != null){
+        max_value = root.right.val;
+        root = root.right;
+
+    }
+    return max_value;
+}
 ```
 
-### Differences between Astro and JSX
+In my code here i did an In Order Predecessor, so it check for the largest number from node left.
 
-Astro component syntax is a superset of HTML. It was designed to feel familiar to anyone with HTML or JSX experience, but there are a couple of key differences between `.astro` files and JSX.
+Then i wrote some unit test to for my functions
 
-#### Attributes
+```java
+package org.example;
 
-In Astro, you use the standard `kebab-case` format for all HTML attributes instead of the `camelCase` used in JSX. This even works for `class`, which is not supported by React.
+import org.junit.jupiter.api.BeforeEach;
 
-```jsx
-<div className="box" dataValue="3" />
-<div class="box" data-value="3" />
+import static org.junit.jupiter.api.Assertions.*;
+
+class BinaryTreeTest {
+    private  BinaryTree tree;
+
+    @BeforeEach
+        public void setup(){
+        tree = new BinaryTree();
+    }
+
+    @org.junit.jupiter.api.Test
+    void insertNodeToRoot() {
+        tree.insert(5);
+
+        assertNotNull(tree.root);
+        assertEquals(5, tree.root.val);
+    }
+    @org.junit.jupiter.api.Test
+    void insertMultipleNode(){
+        tree.insert(5);
+        tree.insert(4);
+        tree.insert(10);
+
+        assertEquals(4, tree.root.left.val);
+        assertEquals(10, tree.root.right.val);
+    }
+
+    @org.junit.jupiter.api.Test
+    void deleteNode(){
+        tree.insert(5);
+        tree.insert(6);
+        tree.insert(10);
+
+        tree.delete(6);
+
+        assertNull(tree.root.left);
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void deleteNodeWithAChild(){
+        tree.insert(7);
+        tree.insert(6);
+        tree.insert(10);
+        tree.insert(5);
+
+        tree.delete(6);
+
+        assertEquals(5, tree.root.left.val);
+    }
+
+    @org.junit.jupiter.api.Test
+    void deleteNodeWithTwoChildren(){
+        tree.insert(6);
+        tree.insert(5);
+        tree.insert(10);
+        tree.insert(4);
+        tree.insert(4);
+        tree.delete(5);
+
+        assertEquals(4, tree.root.left.val);
+    }
+}
 ```
 
-#### Multiple Elements
+Checks the root is added, when multiple numbers are added  the right and left are of expected values. 
 
-An Astro component template can render multiple elements with no need to wrap everything in a single `<div>` or `<>`, unlike JavaScript or JSX.
-
-```astro
----
-// Template with multiple elements
----
-
-<p>No need to wrap elements in a single containing element.</p>
-<p>Astro supports multiple root elements in a template.</p>
-```
-
-#### Comments
-
-In Astro, you can use standard HTML comments or JavaScript-style comments.
-
-```astro
----
-
----
-
-<!-- HTML comment syntax is valid in .astro files -->{/* JS comment syntax is also valid */}
-```
-
-\:::caution
-HTML-style comments will be included in browser DOM, while JS ones will be skipped. To leave TODO messages or other development-only explanations, you may wish to use JavaScript-style comments instead.
-\:::
+Tested for the main functionalities of the binary tree although i didn't know how to test for the traversals. if you do let me know in the comment.
