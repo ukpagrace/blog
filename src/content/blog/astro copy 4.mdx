@@ -1,5 +1,5 @@
 ---
-heroImage: /src/assets/images../../assets/images/banner.jpg
+heroImage: /src/assets/images/BST.png
 category: Data Structure and Algorithms
 description: Binary Tree Data Structure
 pubDate: 2022-11-06T23:00:00.000Z
@@ -10,11 +10,11 @@ tags:
 title: 'Binary Tree in Java with unit test '
 ---
 
-Creating a binary tree in Java, we look at 
+Creating a binary tree in Java, we look at
 
 * Insertion
-* Traversal(In Order, Pre Order, Post Order) 
-*  deletion(In Order Predecessor, In Order Successor).
+* Traversal(In Order, Pre Order, Post Order)
+* deletion(In Order Predecessor, In Order Successor).
 
 In binary tree recursion is a very important algorithm, it really pushes your understanding. Sometimes i have to go through it with a debugger or some times pen and paper to really understand what is happening, now i think i have a good understanding. Peaks of a debugger.
 
@@ -22,23 +22,23 @@ Anyway a binary tree insert the lesser number of the root to the right and the g
 
 We start with a number 10
 
-                         10
+10
 
 we add another number 5, 5 is lesser than 10 so it goes to the left.
 
-                          10
+10
 
-                          /   \\
+/   \\
 
-                        5
+5
 
 we add another number 20, 20 is greater than 10 so it goes to the right.
 
-                          10
+10
 
-                          /   \\
+/   \\
 
-                        5    20
+5    20
 
 That's how a binary tree works, each node has at most two children.
 
@@ -52,10 +52,11 @@ class TreeNode {
     TreeNode left;
     TreeNode right;
 
-    TreeNode(int val) {
-        this.val = val;
-        left = right = null;
-    }
+  TreeNode(int val) {
+    this.val = val;
+    left = right = null;
+  }
+
 }
 ```
 
@@ -139,35 +140,35 @@ private void postOrderTraverse(TreeNode root){
 
 Let's look at Deletion, When we delete a node that has no child, we don't need to account for the children so it's straight forward, when the node has one child when we delete the node, the child of that node becomes the child of the parent node. example
 
-                        10
+10
 
-                        /   \\
+/   \\
 
-                      8     20
+8     20
 
-                       \\
+\\
 
-                       9
+9
 
-If we delete 8 the tree becomes 
+If we delete 8 the tree becomes
 
-                        10
+10
 
-                        /   \\
+/   \\
 
-                      9    20
+9    20
 
-When the node to be deleted has two children we have can use two methods for to select who takes it's place we have the In order successor, it takes the smallest value of the right root. example 
+When the node to be deleted has two children we have can use two methods for to select who takes it's place we have the In order successor, it takes the smallest value of the right root. example
 
-                          15
+   15
 
-                       /         \\
+/         \\
 
-                    10         20
+10         20
 
-                   /   \         /     \\
+/   \         /     \\
 
-                 8   12     17    25
+8   12     17    25
 
 we want to delete 15
 
@@ -286,6 +287,6 @@ class BinaryTreeTest {
 }
 ```
 
-Checks the root is added, when multiple numbers are added  the right and left are of expected values. 
+Checks the root is added, when multiple numbers are added  the right and left are of expected values.
 
 Tested for the main functionalities of the binary tree although i didn't know how to test for the traversals. if you do let me know in the comment.
